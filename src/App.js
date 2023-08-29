@@ -1,6 +1,6 @@
 import { Container, Title, Space, Divider } from "@mantine/core";
 
-// import Movies from "./Movies";
+import Movies from "./Movies";
 import Tvshows from "./Tvshows";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
         <Space h="30px" />
         <Divider />
         {/* list all the movies here */}
-        {/* <Movies /> */}
+        <Movies />
         <Tvshows />
       </Container>
     </div>
