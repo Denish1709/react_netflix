@@ -30,7 +30,11 @@ function Tvshows() {
                     <Space h="20px" />
                     <Group position="center" spacing="5px">
                       <Badge color="green">{tvshow.creator}</Badge>
-                      <Badge color="yellow">{tvshow.genre}</Badge>
+                      {tvshow.genre.map((genre) => (
+                        <Badge color="yellow" key={tvshow.genre}>
+                          {genre}
+                        </Badge>
+                      ))}
                       <Badge color="grape">{tvshow.rating}</Badge>
                     </Group>
                   </Card>
