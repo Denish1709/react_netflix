@@ -20,12 +20,23 @@ function Tvshows() {
 
   const filterTvshow = (genre = "") => {
     if (genre !== "") {
-      const newTvshow = tvshowAPI.filter((tv) => tv.genre === genre);
-      setTvshowAPI(newTvshow);
+      const newTvshow = tvshowAPI.filter((tv) => tv.genre.includes(genre));
+      setTvshows(newTvshow);
     } else {
       setTvshows(tvshowAPI);
     }
   };
+
+  //   const filterTvshow = async (genre) => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:5000/tvshows?genre=" + genre
+  //       );
+  //       setTvshows(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
   return (
     <>
