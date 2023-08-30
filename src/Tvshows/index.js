@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Title, Grid, Card, Badge, Group, Space, Button } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 
 function Tvshows() {
   const [tvshows, setTvshows] = useState([]);
@@ -18,28 +20,58 @@ function Tvshows() {
       });
   }, []);
 
-  const filterTvshow = (genre = "") => {
-    if (genre !== "") {
-      const newTvshow = tvshowAPI.filter((tv) => tv.genre.includes(genre));
-      setTvshows(newTvshow);
-    } else {
-      setTvshows(tvshowAPI);
-    }
-  };
-
-  //   const filterTvshow = async (genre) => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://localhost:5000/tvshows?genre=" + genre
-  //       );
-  //       setTvshows(response.data);
-  //     } catch (error) {
-  //       console.log(error);
+  //   const filterTvshow = (genre = "") => {
+  //     if (genre !== "") {
+  //       const newTvshow = tvshowAPI.filter((tv) => tv.genre.includes(genre));
+  //       setTvshows(newTvshow);
+  //     } else {
+  //       setTvshows(tvshowAPI);
   //     }
   //   };
 
+  const filterTvshow = async (genre) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/tvshows?genre=" + genre
+      );
+      setTvshows(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleTvshowDelete = async (tvshow_id) => {
+    try {
+      await axios({
+        method: "DELETE",
+        url: "http://localhost:5000/tvshows/" + tvshow_id,
+      });
+      // show tvshow is delete message
+      notifications.show({
+        title: "Tvshow Deleted",
+        color: "green",
+      });
+      // method 1 (modify the state) - filter out the deleted tvshow
+      const newTvshows = tvshows.filter((tv) => tv._id !== tvshow_id);
+      setTvshows(newTvshows);
+    } catch (error) {
+      notifications.show({
+        title: error.response.data.message,
+        color: "red",
+      });
+    }
+  };
+
   return (
     <>
+      <Group position="apart">
+        <Title order={3} align="center">
+          Tvshow
+        </Title>
+        <Button component={Link} to="/tvshow_add" color="green">
+          Add New
+        </Button>
+      </Group>
       <Title order={3} align="center">
         Tvshows
       </Title>
@@ -154,6 +186,28 @@ function Tvshows() {
                         </Badge>
                       ))}
                       <Badge color="grape">{tvshow.rating}</Badge>
+                    </Group>
+                    <Space h="20px" />
+                    <Group position="right">
+                      <Button
+                        component={Link}
+                        to={"/tvshows/" + tvshow._id}
+                        color="blue"
+                        size="xs"
+                        radius="50px"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        color="red"
+                        size="xs"
+                        radius="50px"
+                        onClick={() => {
+                          handleTvshowDelete(tvshow._id);
+                        }}
+                      >
+                        Delete
+                      </Button>
                     </Group>
                   </Card>
                 </Grid.Col>
