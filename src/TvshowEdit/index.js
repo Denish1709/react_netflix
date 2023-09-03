@@ -47,7 +47,7 @@ function TvshowEdit() {
   const handleUpdateTvshow = async (event) => {
     event.preventDefault();
     try {
-      await axios({
+      const response = await axios({
         method: "PUT",
         url: "http://localhost:5000/tvshows/" + id,
         headers: {
@@ -64,7 +64,7 @@ function TvshowEdit() {
       });
       // show add success message
       notifications.show({
-        title: "Tvshow Edited",
+        title: "TvShow Update",
         color: "green",
       });
       // redirect back to home page
@@ -91,7 +91,7 @@ function TvshowEdit() {
           label="Title"
           description="The title of the Tvshow"
           withAsterisk
-          onChange={(event) => setTitle(event.targget.value)}
+          onChange={(event) => setTitle(event.target.value)}
         />
         <Space h="20px" />
         <Divider />
